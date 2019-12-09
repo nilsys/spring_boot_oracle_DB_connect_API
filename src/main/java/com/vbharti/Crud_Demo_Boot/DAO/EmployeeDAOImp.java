@@ -35,6 +35,31 @@ public class EmployeeDAOImp implements EmployeeDAO{
 		
 		return employees;
 	}
+
+	@Override
+	public Employee findById(int theId) {
+		Session currentSession=entityManager.unwrap(Session.class);
+		Employee theEmployee=currentSession.get(Employee.class,theId);
+		return theEmployee;
+	}
+
+	@Override
+	public void save(Employee theEmployee) {
+		Session currentSession=entityManager.unwrap(Session.class);
+		currentSession.saveOrUpdate(theEmployee);
+		
+	}
+
+	@Override
+	@Transactional
+	public void deleteById(int theId) {
+		Session cs=entityManager.unwrap(Session.class);
+		
+		Query theQuery=cs.createQuery("delete from Employee where id=:employeeId");
+		theQuery.setParameter("employeeId", theId);
+		theQuery.executeUpdate();
+		
+	}
 	
 
 }
